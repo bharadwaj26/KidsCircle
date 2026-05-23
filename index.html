@@ -1,0 +1,2563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>KidsCircle — Playdates for Swiss Families</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-cream: #FAF6F1;
+    --bg-warm: #F4ECE0;
+    --card-white: #FFFFFF;
+    --primary: #E86A4E;
+    --primary-soft: #FFE5DC;
+    --primary-deep: #B84825;
+    --sage: #7FA66C;
+    --sage-soft: #DDEBD3;
+    --sage-deep: #4E7340;
+    --honey: #E8B14A;
+    --honey-soft: #FAEBC4;
+    --sky: #88B5D3;
+    --sky-soft: #DCEAF3;
+    --lilac: #B8A4D4;
+    --lilac-soft: #ECE3F5;
+    --text-dark: #2A2622;
+    --text-mid: #6B5F55;
+    --text-soft: #A89D92;
+    --border: #EDE5DC;
+    --border-strong: #D9CFC2;
+    --shadow-sm: 0 1px 3px rgba(42, 38, 34, 0.06);
+    --shadow-md: 0 6px 20px rgba(42, 38, 34, 0.08);
+    --shadow-lg: 0 20px 50px rgba(42, 38, 34, 0.15);
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overscroll-behavior: none; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg-cream);
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+    font-size: 15px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; letter-spacing: -0.01em; color: var(--text-dark); }
+
+  /* ---------- Layout ---------- */
+  #app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 15% 20%, rgba(232, 177, 74, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(232, 106, 78, 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse 50% 40% at 70% 15%, rgba(127, 166, 108, 0.08) 0%, transparent 50%),
+      var(--bg-cream);
+  }
+
+  .phone {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    max-height: 920px;
+    background: var(--bg-cream);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    isolation: isolate;
+  }
+  @media (min-width: 640px) {
+    .phone {
+      border-radius: 44px;
+      border: 1px solid var(--border-strong);
+      height: calc(100vh - 40px);
+      max-height: 880px;
+    }
+  }
+  @media (max-width: 639px) {
+    .phone { max-width: 100%; max-height: 100%; }
+  }
+
+  /* ---------- Header ---------- */
+  .header {
+    padding: 18px 22px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    background: var(--bg-cream);
+    z-index: 5;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-mark {
+    width: 34px;
+    height: 34px;
+    background: var(--primary);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    background: radial-gradient(circle at 30% 30%, var(--honey) 0%, var(--honey) 35%, transparent 36%),
+                radial-gradient(circle at 70% 30%, var(--sage) 0%, var(--sage) 35%, transparent 36%),
+                radial-gradient(circle at 50% 75%, var(--sky) 0%, var(--sky) 35%, transparent 36%);
+  }
+  .logo-text {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .logo-text em { font-style: italic; font-weight: 500; color: var(--primary); }
+
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .icon-btn:active { transform: scale(0.94); }
+  .icon-btn svg { width: 18px; height: 18px; stroke: var(--text-dark); }
+  .icon-btn .badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    border: 2px solid var(--card-white);
+  }
+  .icon-btn { position: relative; }
+
+  /* ---------- Main ---------- */
+  .main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+  }
+  .main::-webkit-scrollbar { display: none; }
+  .view { display: none; padding: 0 0 24px; }
+  .view.active { display: block; animation: fadeIn 0.25s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .view-title-row {
+    padding: 4px 22px 16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .view-title { font-size: 28px; line-height: 1.1; }
+  .view-title em { font-style: italic; font-weight: 500; }
+  .view-sub { color: var(--text-mid); font-size: 13px; margin-top: 4px; }
+
+  /* ---------- Discover (swipe cards) ---------- */
+  .filter-chips {
+    display: flex;
+    gap: 8px;
+    padding: 0 22px 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0;
+    padding: 8px 14px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .chip:active { transform: scale(0.96); }
+  .chip.active { background: var(--text-dark); color: var(--bg-cream); border-color: var(--text-dark); }
+  .chip svg { width: 14px; height: 14px; }
+
+  .card-stack {
+    position: relative;
+    height: 540px;
+    margin: 0 22px;
+  }
+  @media (max-height: 780px) { .card-stack { height: 480px; } }
+  @media (max-height: 680px) { .card-stack { height: 420px; } }
+
+  .family-card {
+    position: absolute;
+    inset: 0;
+    background: var(--card-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+    will-change: transform;
+  }
+  .family-card:active { cursor: grabbing; }
+  .family-card.swiping { transition: none; }
+  .family-card.gone-right { transform: translate(150%, -50px) rotate(25deg) !important; opacity: 0; }
+  .family-card.gone-left { transform: translate(-150%, -50px) rotate(-25deg) !important; opacity: 0; }
+
+  .card-hero {
+    height: 38%;
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .card-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top, rgba(255,255,255,0.3), transparent 60%);
+  }
+  .card-emoji { font-size: 72px; line-height: 1; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+
+  .distance-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .distance-badge svg { width: 11px; height: 11px; }
+
+  .verified-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 6px 10px;
+    background: rgba(127, 166, 108, 0.95);
+    color: white;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .verified-badge svg { width: 11px; height: 11px; }
+
+  .card-body { padding: 18px 22px; }
+  .card-name { font-size: 22px; line-height: 1.15; margin-bottom: 2px; }
+  .card-location { font-size: 13px; color: var(--text-mid); display: flex; align-items: center; gap: 4px; margin-bottom: 14px; }
+  .card-location svg { width: 12px; height: 12px; }
+
+  .kids-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .kid-pill {
+    padding: 6px 12px;
+    background: var(--primary-soft);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary-deep);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .kid-pill .age { font-weight: 700; }
+
+  .card-meta {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--text-mid);
+  }
+  .card-meta-item { display: flex; align-items: center; gap: 5px; }
+  .card-meta-item svg { width: 13px; height: 13px; }
+
+  .card-bio {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-mid);
+    margin-bottom: 12px;
+  }
+  .interests-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .interest-tag {
+    padding: 4px 10px;
+    background: var(--bg-warm);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+
+  .swipe-overlay {
+    position: absolute;
+    top: 30px;
+    padding: 8px 18px;
+    border: 3px solid;
+    border-radius: 12px;
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.1s;
+    pointer-events: none;
+    letter-spacing: 0.05em;
+  }
+  .swipe-overlay.like { right: 24px; color: var(--sage); border-color: var(--sage); transform: rotate(12deg); }
+  .swipe-overlay.nope { left: 24px; color: var(--primary); border-color: var(--primary); transform: rotate(-12deg); }
+
+  .action-bar {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    padding: 18px 22px 8px;
+  }
+  .action-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--card-white);
+    box-shadow: var(--shadow-md);
+    display: grid;
+    place-items: center;
+    transition: transform 0.15s;
+    border: 1px solid var(--border);
+  }
+  .action-btn:active { transform: scale(0.9); }
+  .action-btn svg { width: 22px; height: 22px; }
+  .action-btn.skip svg { stroke: var(--primary); }
+  .action-btn.info svg { stroke: var(--sky); width: 18px; height: 18px; }
+  .action-btn.like { width: 68px; height: 68px; background: var(--primary); border-color: var(--primary); }
+  .action-btn.like svg { stroke: white; width: 28px; height: 28px; fill: white; }
+  .action-btn.boost svg { stroke: var(--honey); }
+
+  .empty-stack {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 40px;
+  }
+  .empty-stack-emoji { font-size: 56px; margin-bottom: 12px; }
+  .empty-stack h3 { font-size: 22px; margin-bottom: 6px; }
+  .empty-stack p { color: var(--text-mid); font-size: 14px; }
+
+  /* ---------- Matches View ---------- */
+  .matches-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 22px;
+  }
+  .match-card {
+    background: var(--card-white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    transition: transform 0.15s;
+  }
+  .match-card:active { transform: scale(0.97); }
+  .match-hero { height: 110px; display: grid; place-items: center; position: relative; }
+  .match-hero .card-emoji { font-size: 48px; }
+  .match-new {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .match-info { padding: 12px 14px 14px; }
+  .match-info h4 { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .match-info p { font-size: 11.5px; color: var(--text-mid); }
+
+  .section-label {
+    padding: 0 22px;
+    margin: 18px 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .section-label h3 { font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 600; }
+  .section-label a { font-size: 12px; color: var(--primary); font-weight: 500; }
+
+  .liked-you {
+    display: flex;
+    gap: 12px;
+    padding: 0 22px 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .liked-you::-webkit-scrollbar { display: none; }
+  .liked-mini {
+    flex-shrink: 0;
+    width: 84px;
+    text-align: center;
+  }
+  .liked-mini-avatar {
+    width: 80px;
+    height: 100px;
+    border-radius: var(--radius-md);
+    display: grid;
+    place-items: center;
+    margin-bottom: 6px;
+    position: relative;
+    overflow: hidden;
+    filter: blur(2.5px);
+  }
+  .liked-mini-avatar .card-emoji { font-size: 38px; opacity: 0.85; }
+  .liked-mini p { font-size: 11px; color: var(--text-mid); font-weight: 500; }
+  .liked-count-badge {
+    position: absolute;
+    inset: 0;
+    background: rgba(232, 106, 78, 0.4);
+    display: grid;
+    place-items: center;
+    color: white;
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 700;
+    filter: blur(0);
+  }
+
+  /* ---------- Venues ---------- */
+  .venue-categories {
+    display: flex;
+    gap: 8px;
+    padding: 0 22px 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .venue-categories::-webkit-scrollbar { display: none; }
+  .venue-cat {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 76px;
+    transition: all 0.15s;
+  }
+  .venue-cat .vc-icon { font-size: 22px; line-height: 1; }
+  .venue-cat.active { background: var(--text-dark); color: var(--bg-cream); border-color: var(--text-dark); }
+  .venue-cat:active { transform: scale(0.95); }
+
+  .venues-list { padding: 0 22px; display: flex; flex-direction: column; gap: 12px; }
+  .venue-card {
+    background: var(--card-white);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    transition: transform 0.15s;
+  }
+  .venue-card:active { transform: scale(0.98); }
+  .venue-img {
+    width: 100px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .venue-img .v-emoji { font-size: 38px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.1)); }
+  .venue-content { padding: 14px; flex: 1; min-width: 0; }
+  .venue-name { font-family: 'DM Sans', sans-serif; font-size: 14.5px; font-weight: 600; margin-bottom: 4px; }
+  .venue-loc {
+    font-size: 11.5px;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .venue-loc svg { width: 11px; height: 11px; }
+  .venue-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .v-tag {
+    padding: 2px 7px;
+    background: var(--bg-warm);
+    border-radius: 999px;
+    font-size: 10.5px;
+    color: var(--text-dark);
+  }
+  .venue-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+  }
+  .venue-rating { display: flex; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; }
+  .venue-rating svg { width: 11px; height: 11px; fill: var(--honey); stroke: var(--honey); }
+  .venue-price { font-size: 11px; color: var(--text-mid); font-weight: 500; }
+
+  /* ---------- Messages ---------- */
+  .conv-list { padding: 0 0 8px; }
+  .conv-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 22px;
+    transition: background 0.1s;
+  }
+  .conv-item:active { background: var(--bg-warm); }
+  .conv-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .conv-avatar .ca-emoji { font-size: 28px; }
+  .conv-online {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 11px;
+    height: 11px;
+    background: var(--sage);
+    border-radius: 50%;
+    border: 2px solid var(--bg-cream);
+  }
+  .conv-content { flex: 1; min-width: 0; }
+  .conv-top { display: flex; justify-content: space-between; margin-bottom: 2px; }
+  .conv-name { font-size: 14.5px; font-weight: 600; }
+  .conv-time { font-size: 11.5px; color: var(--text-soft); }
+  .conv-msg {
+    font-size: 13px;
+    color: var(--text-mid);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .conv-msg.unread { color: var(--text-dark); font-weight: 500; }
+  .conv-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
+  .unread-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Chat detail */
+  .chat-view { display: none; flex-direction: column; height: 100%; }
+  .chat-view.active { display: flex; }
+  .chat-header {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-cream);
+  }
+  .chat-back {
+    width: 36px; height: 36px; display: grid; place-items: center;
+    border-radius: 12px;
+  }
+  .chat-back:active { background: var(--bg-warm); }
+  .chat-back svg { width: 20px; height: 20px; }
+  .chat-header-info { flex: 1; }
+  .chat-header-info h3 { font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; }
+  .chat-header-info p { font-size: 11.5px; color: var(--text-mid); }
+  .chat-header-avatar {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .chat-header-avatar .ch-emoji { font-size: 22px; }
+
+  .chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .chat-body::-webkit-scrollbar { display: none; }
+  .chat-day-divider {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-soft);
+    margin: 8px 0;
+    font-weight: 500;
+  }
+  .msg {
+    max-width: 78%;
+    padding: 10px 14px;
+    border-radius: 18px;
+    font-size: 13.5px;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+  .msg.received { align-self: flex-start; background: var(--card-white); border: 1px solid var(--border); border-bottom-left-radius: 6px; }
+  .msg.sent { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 6px; }
+  .msg-card-suggestion {
+    background: var(--sage-soft);
+    border: 1px dashed var(--sage);
+    padding: 12px;
+    border-radius: 14px;
+    align-self: flex-start;
+    max-width: 80%;
+    font-size: 13px;
+  }
+  .msg-card-suggestion strong { display: block; margin-bottom: 4px; font-family: 'Fraunces', serif; font-size: 15px; }
+  .msg-card-suggestion .venue-info {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px solid rgba(127, 166, 108, 0.3);
+  }
+  .msg-card-suggestion .venue-info-emoji { font-size: 24px; }
+  .msg-card-suggestion .venue-info-text { font-size: 12px; color: var(--sage-deep); }
+  .msg-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .msg-action-btn {
+    padding: 6px 12px;
+    background: white;
+    border: 1px solid var(--sage);
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--sage-deep);
+  }
+  .msg-action-btn.primary { background: var(--sage); color: white; }
+
+  .chat-input-bar {
+    padding: 10px 14px 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: var(--bg-cream);
+    border-top: 1px solid var(--border);
+  }
+  .chat-input-bar input {
+    flex: 1;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text-dark);
+    outline: none;
+  }
+  .chat-input-bar input:focus { border-color: var(--primary); }
+  .send-btn {
+    width: 40px; height: 40px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+  }
+  .send-btn svg { width: 18px; height: 18px; stroke: white; fill: white; }
+  .send-btn:active { transform: scale(0.92); }
+
+  /* ---------- Profile ---------- */
+  .profile-hero {
+    text-align: center;
+    padding: 8px 22px 20px;
+  }
+  .profile-avatar-big {
+    width: 96px;
+    height: 96px;
+    border-radius: 28px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 14px;
+    position: relative;
+  }
+  .profile-avatar-big .pa-emoji { font-size: 56px; }
+  .profile-edit {
+    position: absolute;
+    bottom: -4px; right: -4px;
+    width: 30px; height: 30px;
+    background: var(--card-white);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+  .profile-edit svg { width: 13px; height: 13px; }
+  .profile-name { font-size: 24px; margin-bottom: 4px; }
+  .profile-loc { color: var(--text-mid); font-size: 13.5px; display: flex; align-items: center; gap: 4px; justify-content: center; }
+  .profile-loc svg { width: 12px; height: 12px; }
+
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 18px 22px 4px;
+  }
+  .stat-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-num { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; }
+  .stat-label { font-size: 11px; color: var(--text-mid); margin-top: 2px; }
+
+  .profile-section { padding: 18px 22px; }
+  .profile-section h3 { font-size: 17px; font-family: 'Fraunces', serif; margin-bottom: 12px; }
+
+  .kids-cards { display: flex; flex-direction: column; gap: 10px; }
+  .kid-card {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .kid-emoji-box {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    background: var(--honey-soft);
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .kid-card-info h4 { font-family: 'DM Sans', sans-serif; font-size: 14.5px; font-weight: 600; margin-bottom: 2px; }
+  .kid-card-info p { font-size: 12px; color: var(--text-mid); }
+
+  .pref-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pref-row:last-child { border-bottom: none; }
+  .pref-label { font-size: 13.5px; color: var(--text-dark); }
+  .pref-value { font-size: 13px; color: var(--text-mid); font-weight: 500; }
+  .pref-row svg { width: 14px; height: 14px; color: var(--text-soft); margin-left: 6px; }
+
+  .interest-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .interest-grid .interest-tag { font-size: 12px; padding: 6px 12px; background: var(--card-white); border: 1px solid var(--border); }
+  .interest-grid .interest-tag.selected { background: var(--text-dark); color: var(--bg-cream); border-color: var(--text-dark); }
+
+  /* Match notification modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 38, 34, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-backdrop.active { display: flex; animation: fadeIn 0.2s; }
+  .match-modal {
+    background: var(--bg-cream);
+    border-radius: 28px;
+    padding: 32px 28px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pop { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .match-modal-title { font-size: 32px; line-height: 1; margin-bottom: 8px; }
+  .match-modal-title em { color: var(--primary); font-style: italic; }
+  .match-modal-sub { color: var(--text-mid); font-size: 14px; margin-bottom: 24px; }
+  .match-avatars {
+    display: flex;
+    justify-content: center;
+    gap: -8px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .match-mini-avatar {
+    width: 92px; height: 92px;
+    border-radius: 26px;
+    display: grid; place-items: center;
+    border: 4px solid var(--bg-cream);
+  }
+  .match-mini-avatar .card-emoji { font-size: 50px; }
+  .match-mini-avatar:nth-child(2) { margin-left: -20px; }
+  .match-modal-actions { display: flex; flex-direction: column; gap: 10px; }
+  .modal-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    font-weight: 600;
+    transition: transform 0.15s;
+  }
+  .modal-btn:active { transform: scale(0.97); }
+  .modal-btn.primary { background: var(--primary); color: white; }
+  .modal-btn.secondary { background: transparent; color: var(--text-mid); }
+
+  /* ---------- Venues View Toggle + Map ---------- */
+  .view-toggle {
+    display: flex;
+    margin: 0 22px 14px;
+    padding: 4px;
+    background: var(--bg-warm);
+    border-radius: 12px;
+    gap: 2px;
+  }
+  .vt-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .vt-btn svg { width: 14px; height: 14px; }
+  .vt-btn.active { background: var(--card-white); color: var(--text-dark); box-shadow: var(--shadow-sm); }
+
+  .map-categories {
+    display: flex;
+    gap: 8px;
+    padding: 0 22px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .map-categories::-webkit-scrollbar { display: none; }
+  .map-cat-pill {
+    flex-shrink: 0;
+    padding: 7px 13px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .map-cat-pill .pin-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid white;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  }
+  .map-cat-pill.active { background: var(--text-dark); color: var(--bg-cream); border-color: var(--text-dark); }
+  .map-cat-pill:active { transform: scale(0.95); }
+
+  .map-container {
+    margin: 0 22px 14px;
+    background: linear-gradient(165deg, #F4ECE0 0%, #DDEBD3 60%, #D5E2C9 100%);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .map-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 35% 25% at 75% 80%, rgba(127, 166, 108, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 20% at 20% 70%, rgba(127, 166, 108, 0.10) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .ch-map { width: 100%; height: auto; display: block; position: relative; z-index: 1; }
+  .ch-map .land { fill: #FAF2E2; stroke: #C9BEA8; stroke-width: 1; stroke-dasharray: 0; opacity: 0.9; }
+  .ch-map .alps { fill: #BFD3AC; opacity: 0.4; }
+  .ch-map .water { fill: #9CC0D6; opacity: 0.7; stroke: #7FA8C2; stroke-width: 0.5; }
+  .ch-map .city-label { font-family: 'DM Sans', sans-serif; font-size: 8.5px; fill: #8A7E6F; font-weight: 600; letter-spacing: 0.08em; }
+  .ch-map .country-label { font-family: 'Fraunces', serif; font-size: 11px; fill: #2A2622; font-weight: 500; opacity: 0.35; letter-spacing: 0.25em; font-style: italic; }
+  .ch-map .city-dot { fill: #8A7E6F; }
+
+  .venue-pin {
+    cursor: pointer;
+    transform-origin: center;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .venue-pin:hover { transform: scale(1.2); }
+  .venue-pin.active { transform: scale(1.3); }
+
+  .map-legend {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 8px 10px;
+    background: rgba(255, 250, 243, 0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    display: flex;
+    gap: 10px;
+    font-size: 10px;
+    color: var(--text-mid);
+    flex-wrap: wrap;
+    z-index: 2;
+    justify-content: center;
+  }
+  .map-legend-item { display: flex; align-items: center; gap: 4px; }
+  .map-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1.5px solid white;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+  }
+
+  .map-help {
+    padding: 10px 22px 4px;
+    font-size: 12px;
+    color: var(--text-mid);
+    text-align: center;
+  }
+  .map-help strong { color: var(--text-dark); font-weight: 600; }
+
+  /* ---------- Bottom Sheet ---------- */
+  .sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(42, 38, 34, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 85;
+  }
+  .sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+  .bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-cream);
+    border-radius: 28px 28px 0 0;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 90;
+    max-height: 88%;
+    display: flex;
+    flex-direction: column;
+  }
+  .bottom-sheet.open { transform: translateY(0); }
+  .sheet-handle {
+    width: 38px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 2px;
+    margin: 10px auto 4px;
+    flex-shrink: 0;
+  }
+  .sheet-scroll {
+    overflow-y: auto;
+    padding: 8px 22px 16px;
+    scrollbar-width: none;
+  }
+  .sheet-scroll::-webkit-scrollbar { display: none; }
+
+  .sheet-hero {
+    height: 130px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .sheet-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top, rgba(255,255,255,0.3), transparent 60%);
+  }
+  .sheet-hero .v-emoji { font-size: 56px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15)); }
+  .sheet-hero-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-dark);
+  }
+  .sheet-hero-badge svg { width: 11px; height: 11px; fill: var(--honey); stroke: var(--honey); }
+  .sheet-hero-cat {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 5px 10px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-transform: capitalize;
+  }
+
+  .sheet-title { font-size: 22px; line-height: 1.15; margin-bottom: 4px; }
+  .sheet-loc {
+    font-size: 12.5px;
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .sheet-loc svg { width: 12px; height: 12px; }
+  .sheet-loc .dot { color: var(--text-soft); margin: 0 4px; }
+
+  .sheet-meta {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .sheet-meta .v-tag { padding: 4px 10px; font-size: 11.5px; }
+
+  .sheet-section { margin-top: 22px; }
+  .sheet-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .sheet-section-head h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sheet-section-head h4 em { font-style: italic; font-weight: 500; color: var(--primary); }
+  .sheet-section-head .count-pill {
+    background: var(--primary);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .sheet-section-sub {
+    font-size: 12.5px;
+    color: var(--text-mid);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .interested-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 -22px;
+    padding: 4px 22px 8px;
+  }
+  .interested-list::-webkit-scrollbar { display: none; }
+  .interested-card {
+    flex-shrink: 0;
+    width: 140px;
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.15s;
+    box-shadow: var(--shadow-sm);
+  }
+  .interested-card:active { transform: scale(0.96); }
+  .interested-card .ic-hero {
+    height: 75px;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .interested-card .ic-hero .card-emoji { font-size: 32px; }
+  .interested-card .ic-match {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--sage);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .interested-card .ic-body { padding: 10px 12px 12px; }
+  .interested-card h5 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .interested-card .ic-detail {
+    font-size: 11px;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+  }
+  .interested-card .ic-when {
+    padding: 3px 8px;
+    background: var(--honey-soft);
+    border-radius: 999px;
+    font-size: 10.5px;
+    color: var(--primary-deep);
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .interested-card .ic-when svg { width: 9px; height: 9px; }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .info-item {
+    background: var(--card-white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .info-item .il { font-size: 10.5px; color: var(--text-mid); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  .info-item .iv { font-size: 13px; color: var(--text-dark); font-weight: 600; }
+
+  .sheet-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .sheet-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .sheet-btn:active { transform: scale(0.97); }
+  .sheet-btn.primary { background: var(--primary); color: white; }
+  .sheet-btn.secondary { background: var(--card-white); color: var(--text-dark); border: 1px solid var(--border); }
+  .sheet-btn.secondary.toggled { background: var(--sage); color: white; border-color: var(--sage); }
+  .sheet-btn svg { width: 16px; height: 16px; }
+
+  /* ---------- Bottom Nav ---------- */
+  .bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 6px 14px;
+    background: var(--bg-cream);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 5;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 4px;
+    color: var(--text-soft);
+    transition: color 0.15s;
+    position: relative;
+  }
+  .nav-item.active { color: var(--text-dark); }
+  .nav-item svg { width: 22px; height: 22px; transition: transform 0.15s; }
+  .nav-item.active svg { transform: scale(1.05); }
+  .nav-item.active svg { stroke: var(--text-dark); }
+  .nav-label { font-size: 10.5px; font-weight: 500; }
+  .nav-badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 16px);
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 999px;
+    min-width: 14px;
+    text-align: center;
+  }
+
+  /* Welcome splash */
+  .splash {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, var(--primary-soft) 0%, var(--honey-soft) 50%, var(--sage-soft) 100%);
+    display: grid;
+    place-items: center;
+    z-index: 50;
+    padding: 40px;
+    text-align: center;
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .splash.hidden { opacity: 0; pointer-events: none; transform: scale(1.05); }
+  .splash-content { max-width: 320px; }
+  .splash-logo-big {
+    width: 72px; height: 72px;
+    background: var(--primary);
+    border-radius: 22px;
+    margin: 0 auto 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .splash-logo-big::after {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    background: radial-gradient(circle at 30% 30%, var(--honey) 0%, var(--honey) 35%, transparent 36%),
+                radial-gradient(circle at 70% 30%, var(--sage) 0%, var(--sage) 35%, transparent 36%),
+                radial-gradient(circle at 50% 75%, var(--sky) 0%, var(--sky) 35%, transparent 36%);
+  }
+  .splash-title { font-size: 36px; line-height: 1.05; margin-bottom: 10px; letter-spacing: -0.02em; }
+  .splash-title em { font-style: italic; color: var(--primary-deep); font-weight: 500; }
+  .splash-sub { font-size: 15px; color: var(--text-mid); line-height: 1.5; margin-bottom: 28px; }
+  .splash-btn {
+    padding: 14px 32px;
+    background: var(--text-dark);
+    color: var(--bg-cream);
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+  }
+  .splash-btn:active { transform: scale(0.97); }
+  .splash-flags {
+    margin-top: 24px;
+    font-size: 11px;
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="phone">
+
+    <!-- Splash screen -->
+    <div class="splash" id="splash">
+      <div class="splash-content">
+        <div class="splash-logo-big"></div>
+        <h1 class="splash-title">Find your <em>playdate</em> crew</h1>
+        <p class="splash-sub">Connect with families nearby whose kids match yours — by age, language, interests, and the places you love.</p>
+        <button class="splash-btn" onclick="document.getElementById('splash').classList.add('hidden')">Start exploring</button>
+        <div class="splash-flags">🇨🇭 Made for families in Switzerland</div>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="main-header">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">Kids<em>Circle</em></div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="alert('Filter: ages, distance, languages, family type, schedule…')">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        </button>
+        <button class="icon-btn" onclick="alert('You have 2 new notifications')">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main" id="main-content">
+
+      <!-- DISCOVER -->
+      <section class="view active" id="view-discover">
+        <div class="view-title-row">
+          <div>
+            <h1 class="view-title">Discover <em>nearby</em></h1>
+            <p class="view-sub">Families matching your kids' ages</p>
+          </div>
+        </div>
+
+        <div class="filter-chips">
+          <button class="chip active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.5 8 13 8 13s8-7.5 8-13a8 8 0 0 0-8-8z"/></svg>
+            5 km
+          </button>
+          <button class="chip">Ages 4–8</button>
+          <button class="chip">🇨🇭 DE/EN</button>
+          <button class="chip">Weekends</button>
+          <button class="chip">+ Add</button>
+        </div>
+
+        <div class="card-stack" id="cardStack"></div>
+
+        <div class="action-bar">
+          <button class="action-btn skip" onclick="swipeCard('left')" aria-label="Skip">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <button class="action-btn info" onclick="alert('See full profile, kids details, schedule preferences, and shared interests.')" aria-label="More info">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </button>
+          <button class="action-btn like" onclick="swipeCard('right')" aria-label="Connect">
+            <svg viewBox="0 0 24 24" fill="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="action-btn boost" onclick="alert('Boost: prioritize playdates this weekend!')" aria-label="Boost">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- MATCHES -->
+      <section class="view" id="view-matches">
+        <div class="view-title-row">
+          <div>
+            <h1 class="view-title">Your <em>matches</em></h1>
+            <p class="view-sub">Tap a family to start a chat</p>
+          </div>
+        </div>
+
+        <div class="section-label">
+          <h3>Liked your family</h3>
+          <a href="#">See all</a>
+        </div>
+        <div class="liked-you" id="likedYou"></div>
+
+        <div class="section-label">
+          <h3>Matched families</h3>
+          <a href="#">Filter</a>
+        </div>
+        <div class="matches-grid" id="matchesGrid"></div>
+      </section>
+
+      <!-- VENUES -->
+      <section class="view" id="view-venues">
+        <div class="view-title-row">
+          <div>
+            <h1 class="view-title">Playdate <em>spots</em></h1>
+            <p class="view-sub">Curated places across Switzerland</p>
+          </div>
+        </div>
+
+        <div class="view-toggle">
+          <button class="vt-btn active" data-mode="list" onclick="setVenueMode('list')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            List
+          </button>
+          <button class="vt-btn" data-mode="map" onclick="setVenueMode('map')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            Map
+          </button>
+        </div>
+
+        <!-- List mode -->
+        <div id="venuesListMode">
+          <div class="venue-categories" id="venueCats">
+            <button class="venue-cat active" data-cat="all"><span class="vc-icon">✨</span>All</button>
+            <button class="venue-cat" data-cat="park"><span class="vc-icon">🌳</span>Parks</button>
+            <button class="venue-cat" data-cat="indoor"><span class="vc-icon">🤸</span>Indoor</button>
+            <button class="venue-cat" data-cat="museum"><span class="vc-icon">🔬</span>Museums</button>
+            <button class="venue-cat" data-cat="camping"><span class="vc-icon">⛺</span>Camping</button>
+            <button class="venue-cat" data-cat="swim"><span class="vc-icon">🏊</span>Swim</button>
+            <button class="venue-cat" data-cat="zoo"><span class="vc-icon">🦒</span>Zoos</button>
+            <button class="venue-cat" data-cat="adventure"><span class="vc-icon">🧗</span>Adventure</button>
+          </div>
+          <div class="venues-list" id="venuesList"></div>
+        </div>
+
+        <!-- Map mode -->
+        <div id="venuesMapMode" style="display:none;">
+          <div class="map-categories" id="mapCats">
+            <button class="map-cat-pill active" data-cat="all">All venues</button>
+            <button class="map-cat-pill" data-cat="park"><span class="pin-dot" style="background:#7FA66C;"></span>Parks</button>
+            <button class="map-cat-pill" data-cat="indoor"><span class="pin-dot" style="background:#B8A4D4;"></span>Indoor</button>
+            <button class="map-cat-pill" data-cat="museum"><span class="pin-dot" style="background:#88B5D3;"></span>Museums</button>
+            <button class="map-cat-pill" data-cat="camping"><span class="pin-dot" style="background:#E8B14A;"></span>Camping</button>
+            <button class="map-cat-pill" data-cat="swim"><span class="pin-dot" style="background:#5BA0C7;"></span>Swim</button>
+            <button class="map-cat-pill" data-cat="zoo"><span class="pin-dot" style="background:#4E7340;"></span>Zoos</button>
+            <button class="map-cat-pill" data-cat="adventure"><span class="pin-dot" style="background:#E86A4E;"></span>Adventure</button>
+          </div>
+
+          <div class="map-container">
+            <svg class="ch-map" viewBox="0 0 600 420" xmlns="http://www.w3.org/2000/svg">
+              <!-- Country outline -->
+              <path class="land" d="M 80 195 C 65 130, 135 95, 230 100 C 330 92, 425 105, 515 138 C 552 160, 555 200, 525 228 C 490 258, 425 278, 380 295 C 320 318, 250 332, 180 322 C 110 308, 55 270, 80 195 Z"/>
+
+              <!-- Alps tint -->
+              <path class="alps" d="M 150 260 C 210 245, 290 255, 365 268 C 425 278, 475 268, 510 245 C 490 270, 430 285, 380 297 C 320 320, 250 335, 180 325 C 130 318, 100 295, 150 260 Z"/>
+
+              <!-- Lakes -->
+              <ellipse class="water" cx="105" cy="278" rx="34" ry="11" transform="rotate(-18 105 278)"/>
+              <ellipse class="water" cx="370" cy="160" rx="22" ry="6.5" transform="rotate(-30 370 160)"/>
+              <ellipse class="water" cx="318" cy="190" rx="17" ry="9"/>
+              <ellipse class="water" cx="408" cy="108" rx="28" ry="7"/>
+              <ellipse class="water" cx="395" cy="320" rx="11" ry="4.5" transform="rotate(55 395 320)"/>
+              <ellipse class="water" cx="200" cy="200" rx="14" ry="5" transform="rotate(-25 200 200)"/>
+
+              <!-- City dots and labels -->
+              <circle class="city-dot" cx="77" cy="296" r="2"/>
+              <text class="city-label" x="60" y="312">GENEVA</text>
+
+              <circle class="city-dot" cx="127" cy="256" r="2"/>
+              <text class="city-label" x="105" y="250">LAUSANNE</text>
+
+              <circle class="city-dot" cx="220" cy="195" r="2"/>
+              <text class="city-label" x="207" y="188">BERN</text>
+
+              <circle class="city-dot" cx="237" cy="114" r="2"/>
+              <text class="city-label" x="222" y="108">BASEL</text>
+
+              <circle class="city-dot" cx="342" cy="138" r="2"/>
+              <text class="city-label" x="320" y="131">ZÜRICH</text>
+
+              <circle class="city-dot" cx="432" cy="131" r="2"/>
+              <text class="city-label" x="412" y="124">ST. GALLEN</text>
+
+              <circle class="city-dot" cx="314" cy="181" r="2"/>
+              <text class="city-label" x="296" y="175">LUZERN</text>
+
+              <circle class="city-dot" cx="386" cy="323" r="2"/>
+              <text class="city-label" x="368" y="338">LUGANO</text>
+
+              <circle class="city-dot" cx="265" cy="230" r="2"/>
+              <text class="city-label" x="240" y="244">INTERLAKEN</text>
+
+              <!-- Country tagline -->
+              <text class="country-label" x="300" y="395" text-anchor="middle">SCHWEIZ · SUISSE · SVIZZERA</text>
+
+              <!-- Venue pins (injected by JS) -->
+              <g id="venuePins"></g>
+            </svg>
+
+            <div class="map-legend">
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#7FA66C;"></span>Park</div>
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#B8A4D4;"></span>Indoor</div>
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#88B5D3;"></span>Museum</div>
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#E8B14A;"></span>Camping</div>
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#5BA0C7;"></span>Swim</div>
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#4E7340;"></span>Zoo</div>
+              <div class="map-legend-item"><span class="map-legend-dot" style="background:#E86A4E;"></span>Adventure</div>
+            </div>
+          </div>
+
+          <p class="map-help">Tap a pin · the <strong>orange badge</strong> shows how many families want to go there</p>
+        </div>
+      </section>
+
+      <!-- MESSAGES -->
+      <section class="view" id="view-messages">
+        <div id="convListWrap">
+          <div class="view-title-row">
+            <div>
+              <h1 class="view-title">Messages</h1>
+              <p class="view-sub">Plan your next playdate</p>
+            </div>
+          </div>
+          <div class="conv-list" id="convList"></div>
+        </div>
+
+        <div class="chat-view" id="chatView">
+          <div class="chat-header">
+            <button class="chat-back" onclick="closeChat()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="chat-header-avatar" id="chatHeaderAvatar"><span class="ch-emoji"></span></div>
+            <div class="chat-header-info">
+              <h3 id="chatHeaderName"></h3>
+              <p id="chatHeaderStatus">Active now</p>
+            </div>
+            <button class="icon-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </button>
+          </div>
+          <div class="chat-body" id="chatBody"></div>
+          <div class="chat-input-bar">
+            <input type="text" placeholder="Type a message…" id="chatInput" onkeypress="if(event.key==='Enter') sendMsg()" />
+            <button class="send-btn" onclick="sendMsg()">
+              <svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="view" id="view-profile">
+        <div class="view-title-row">
+          <div>
+            <h1 class="view-title">Our <em>family</em></h1>
+            <p class="view-sub">Manage how others see you</p>
+          </div>
+        </div>
+
+        <div class="profile-hero">
+          <div class="profile-avatar-big" style="background: linear-gradient(135deg, #FFE5DC 0%, #FAEBC4 100%);">
+            <span class="pa-emoji">🏡</span>
+            <button class="profile-edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button>
+          </div>
+          <h2 class="profile-name">The Hofer Family</h2>
+          <p class="profile-loc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Zürich-Wiedikon · Kanton ZH
+          </p>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Matches</div></div>
+          <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Playdates</div></div>
+          <div class="stat-card"><div class="stat-num">4.9</div><div class="stat-label">⭐ Rating</div></div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Our kids</h3>
+          <div class="kids-cards">
+            <div class="kid-card">
+              <div class="kid-emoji-box" style="background: #DCEAF3;">👧</div>
+              <div class="kid-card-info">
+                <h4>Mila</h4>
+                <p>5 years · Loves drawing, dinosaurs, and the Waldspielplatz</p>
+              </div>
+            </div>
+            <div class="kid-card">
+              <div class="kid-emoji-box" style="background: var(--sage-soft);">👦</div>
+              <div class="kid-card-info">
+                <h4>Jonas</h4>
+                <p>7 years · Football fanatic, learning piano, into LEGO Technic</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Family preferences</h3>
+          <div class="pref-row">
+            <span class="pref-label">Family type</span>
+            <span class="pref-value">Two parents</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Languages spoken</span>
+            <span class="pref-value">DE · EN · CH-DE</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Background</span>
+            <span class="pref-value">Swiss-Austrian</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Availability</span>
+            <span class="pref-value">Sat · Sun · Wed PM</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Search radius</span>
+            <span class="pref-value">5 km</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Dietary needs</span>
+            <span class="pref-value">Nut-free</span>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Our interests</h3>
+          <div class="interest-grid">
+            <span class="interest-tag selected">🥾 Hiking</span>
+            <span class="interest-tag selected">🎨 Art</span>
+            <span class="interest-tag selected">🌲 Forest play</span>
+            <span class="interest-tag selected">🏊 Swimming</span>
+            <span class="interest-tag selected">🧱 LEGO</span>
+            <span class="interest-tag selected">📚 Reading</span>
+            <span class="interest-tag">⚽ Football</span>
+            <span class="interest-tag">🎵 Music</span>
+            <span class="interest-tag">🔬 Science</span>
+            <span class="interest-tag">🚂 Trains</span>
+            <span class="interest-tag">🦖 Dinosaurs</span>
+            <span class="interest-tag">+ More</span>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Favourite venues</h3>
+          <div id="favVenues" class="venues-list" style="padding:0"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-view="discover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+        <span class="nav-label">Discover</span>
+      </button>
+      <button class="nav-item" data-view="matches">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="nav-label">Matches</span>
+      </button>
+      <button class="nav-item" data-view="venues">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span class="nav-label">Venues</span>
+      </button>
+      <button class="nav-item" data-view="messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="nav-label">Chats</span>
+        <span class="nav-badge">2</span>
+      </button>
+      <button class="nav-item" data-view="profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="nav-label">Family</span>
+      </button>
+    </nav>
+
+    <!-- Venue bottom sheet -->
+    <div class="sheet-backdrop" id="sheetBackdrop" onclick="closeVenueSheet()"></div>
+    <div class="bottom-sheet" id="venueSheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-scroll" id="sheetScroll"></div>
+    </div>
+
+    <!-- Match modal -->
+    <div class="modal-backdrop" id="matchModal">
+      <div class="match-modal">
+        <h2 class="match-modal-title">It's a <em>match!</em></h2>
+        <p class="match-modal-sub">You and <span id="matchedFamilyName">the family</span> are excited to play. Say hi!</p>
+        <div class="match-avatars">
+          <div class="match-mini-avatar" style="background: linear-gradient(135deg, #FFE5DC 0%, #FAEBC4 100%);"><span class="card-emoji">🏡</span></div>
+          <div class="match-mini-avatar" id="matchedFamilyAvatar"><span class="card-emoji"></span></div>
+        </div>
+        <div class="match-modal-actions">
+          <button class="modal-btn primary" onclick="closeMatchModal(true)">Send a message</button>
+          <button class="modal-btn secondary" onclick="closeMatchModal(false)">Keep discovering</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ========== DATA ==========
+const families = [
+  {
+    name: "The Müller Family",
+    parents: "Anna & Stefan",
+    kids: [{name:"Lena", age:4}, {name:"Max", age:7}],
+    location: "Zürich-Wipkingen",
+    distance: "1.2 km",
+    languages: ["DE", "CH-DE", "EN"],
+    background: "Swiss",
+    familyType: "Two parents",
+    interests: ["🥾 Hiking", "🎨 Art", "🌲 Forest play", "📚 Reading"],
+    bio: "Outdoor family who loves the Üetliberg and rainy-day museum trips. Always up for a Waldspielplatz adventure.",
+    emoji: "🏔️",
+    gradient: "linear-gradient(135deg, #FAEBC4 0%, #FFE5DC 100%)",
+    verified: true,
+    schedule: "Sat AM · Sun"
+  },
+  {
+    name: "Famille Dubois",
+    parents: "Camille & Thomas",
+    kids: [{name:"Sophie", age:5}],
+    location: "Geneva-Eaux-Vives",
+    distance: "2.4 km",
+    languages: ["FR", "EN"],
+    background: "French-Swiss",
+    familyType: "Two parents",
+    interests: ["🎵 Music", "🏊 Swimming", "🎭 Theatre"],
+    bio: "Bonjour! Sophie loves singing and would adore a swimming buddy. We hang at Parc des Bastions most Saturdays.",
+    emoji: "🎨",
+    gradient: "linear-gradient(135deg, #DCEAF3 0%, #ECE3F5 100%)",
+    verified: true,
+    schedule: "Sat all day"
+  },
+  {
+    name: "Famiglia Rossi",
+    parents: "Giulia & Marco",
+    kids: [{name:"Marco Jr.", age:3}, {name:"Luca", age:6}, {name:"Giulia", age:9}],
+    location: "Lugano",
+    distance: "0.8 km",
+    languages: ["IT", "DE", "EN"],
+    background: "Italian-Swiss",
+    familyType: "Two parents",
+    interests: ["⚽ Football", "🍕 Cooking", "🚴 Cycling"],
+    bio: "Big lively family from Lugano. Our kitchen is always open and we make the best pizza in Ticino (we promise).",
+    emoji: "🍕",
+    gradient: "linear-gradient(135deg, #DDEBD3 0%, #FAEBC4 100%)",
+    verified: true,
+    schedule: "Weekends"
+  },
+  {
+    name: "The Schmidt-Patel Family",
+    parents: "Priya & Daniel",
+    kids: [{name:"Anya", age:5}, {name:"Kiran", age:8}],
+    location: "Basel-Gundeli",
+    distance: "3.1 km",
+    languages: ["EN", "DE", "Hindi"],
+    background: "Indian-Swiss",
+    familyType: "Two parents",
+    interests: ["🔬 Science", "🎲 Board games", "🌍 Culture swap"],
+    bio: "Mixed-heritage family raising kids bilingually. We love science museums and would love to meet other multicultural families.",
+    emoji: "🌍",
+    gradient: "linear-gradient(135deg, #ECE3F5 0%, #DCEAF3 100%)",
+    verified: true,
+    schedule: "Sun · Wed PM"
+  },
+  {
+    name: "Lindqvist Family",
+    parents: "Astrid (single mum)",
+    kids: [{name:"Elias", age:6}],
+    location: "Bern-Länggasse",
+    distance: "4.2 km",
+    languages: ["SV", "EN", "DE"],
+    background: "Swedish expats",
+    familyType: "Single parent",
+    interests: ["🌲 Forest play", "📚 Reading", "🦌 Nature"],
+    bio: "Swedish family of two, new to Bern. Looking for English/Swedish-speaking friends. Elias is shy at first but golden once warmed up.",
+    emoji: "🦌",
+    gradient: "linear-gradient(135deg, #DDEBD3 0%, #DCEAF3 100%)",
+    verified: false,
+    schedule: "Sat PM · Sun"
+  },
+  {
+    name: "Tanaka Family",
+    parents: "Aiko & Kenji",
+    kids: [{name:"Yuki", age:4}, {name:"Sora", age:7}],
+    location: "Lausanne-Ouchy",
+    distance: "5.6 km",
+    languages: ["JP", "EN", "FR"],
+    background: "Japanese expats",
+    familyType: "Two parents",
+    interests: ["🎨 Art", "🏊 Swimming", "🍣 Cooking"],
+    bio: "Konnichiwa! We moved from Tokyo last year. The kids would love friends to practice French with — and we can teach origami!",
+    emoji: "🌸",
+    gradient: "linear-gradient(135deg, #FFE5DC 0%, #ECE3F5 100%)",
+    verified: true,
+    schedule: "Weekends"
+  },
+  {
+    name: "Yilmaz Ailesi",
+    parents: "Esra & Mehmet",
+    kids: [{name:"Emre", age:5}, {name:"Zeynep", age:8}],
+    location: "Winterthur-Töss",
+    distance: "6.0 km",
+    languages: ["TR", "DE", "EN"],
+    background: "Turkish-Swiss",
+    familyType: "Two parents",
+    interests: ["⚽ Football", "🍳 Cooking", "🎪 Festivals"],
+    bio: "Merhaba! Football-mad household. We host Sunday family lunches and would love new friends to join the table.",
+    emoji: "⚽",
+    gradient: "linear-gradient(135deg, #FAEBC4 0%, #DDEBD3 100%)",
+    verified: true,
+    schedule: "Sun PM"
+  },
+  {
+    name: "The O'Connor Family",
+    parents: "Niamh & Patrick",
+    kids: [{name:"Liam", age:3}, {name:"Aoife", age:6}],
+    location: "Zug",
+    distance: "8.2 km",
+    languages: ["EN", "DE-beginner"],
+    background: "Irish expats",
+    familyType: "Two parents",
+    interests: ["🎵 Music", "🥾 Hiking", "🎭 Storytelling"],
+    bio: "Recently relocated for work. Looking for English-speaking families to do toddler playgroups with. Bring tea!",
+    emoji: "☘️",
+    gradient: "linear-gradient(135deg, #DDEBD3 0%, #FAEBC4 100%)",
+    verified: true,
+    schedule: "Sat · Tue/Thu AM"
+  },
+  {
+    name: "Familia García-Meier",
+    parents: "Carmen & Tobias (same-sex moms)",
+    kids: [{name:"Mateo", age:5}],
+    location: "Zürich-Seefeld",
+    distance: "2.0 km",
+    languages: ["ES", "DE", "EN"],
+    background: "Spanish-Swiss",
+    familyType: "Two-mom family",
+    interests: ["💃 Dance", "🌎 Languages", "🎨 Art"],
+    bio: "Mateo is bilingual ES/DE and loves dancing. We're an LGBT+ family looking for open-minded friends — all welcome.",
+    emoji: "💃",
+    gradient: "linear-gradient(135deg, #ECE3F5 0%, #FFE5DC 100%)",
+    verified: true,
+    schedule: "Sat AM · Sun"
+  },
+  {
+    name: "Familie Weber-Chen",
+    parents: "Mei-Ling & Andreas",
+    kids: [{name:"Mei", age:4}, {name:"Tobias", age:7}],
+    location: "St. Gallen",
+    distance: "9.4 km",
+    languages: ["ZH", "DE", "EN"],
+    background: "Chinese-Swiss",
+    familyType: "Two parents",
+    interests: ["📚 Reading", "🚂 Trains", "🥟 Cooking"],
+    bio: "Trilingual household. Kids attend Mandarin Saturday school. Always keen for nature walks and dim sum dates.",
+    emoji: "🥟",
+    gradient: "linear-gradient(135deg, #DCEAF3 0%, #DDEBD3 100%)",
+    verified: true,
+    schedule: "Sun"
+  }
+];
+
+const venues = [
+  { name: "Knies Kinderzoo", loc: "Rapperswil-Jona, SG", cat: "zoo", emoji: "🦒", tags:["Animals","Outdoor","Toddler-friendly"], rating: 4.8, price:"CHF 24/adult", gradient: "linear-gradient(135deg, #FAEBC4 0%, #DDEBD3 100%)", x: 371, y: 158, about: "Famous family zoo run by the Circus Knies dynasty. Pony rides, elephant shows, and a baby zoo. Perfect for ages 2-10." },
+  { name: "Zoo Zürich", loc: "Zürich, ZH", cat: "zoo", emoji: "🐘", tags:["All ages","Masoala rainforest"], rating: 4.9, price:"CHF 29/adult", gradient: "linear-gradient(135deg, #DDEBD3 0%, #DCEAF3 100%)", x: 348, y: 137, about: "World-class zoo with the immersive Masoala rainforest hall, Kaeng Krachan elephant park, and a kids' play area. Easy half-day or full-day visit." },
+  { name: "Verkehrshaus der Schweiz", loc: "Luzern, LU", cat: "museum", emoji: "🚂", tags:["Trains","Interactive","Rainy-day"], rating: 4.7, price:"CHF 35/adult", gradient: "linear-gradient(135deg, #DCEAF3 0%, #ECE3F5 100%)", x: 320, y: 183, about: "Switzerland's most-visited museum. Trains, planes, cars, ships, and a planetarium. Kids can climb in cockpits and play conductor." },
+  { name: "Swiss Science Center Technorama", loc: "Winterthur, ZH", cat: "museum", emoji: "🔬", tags:["Hands-on","STEM","Age 4+"], rating: 4.9, price:"CHF 29/adult", gradient: "linear-gradient(135deg, #ECE3F5 0%, #FFE5DC 100%)", x: 358, y: 121, about: "500+ interactive STEM exhibits. Wind, water, electricity, optical illusions. Allow a full day — kids never want to leave." },
+  { name: "Alpamare Waterpark", loc: "Pfäffikon, SZ", cat: "swim", emoji: "🌊", tags:["Slides","Indoor","All weather"], rating: 4.6, price:"CHF 49/4hr", gradient: "linear-gradient(135deg, #DCEAF3 0%, #DDEBD3 100%)", x: 367, y: 163, about: "Europe's biggest covered waterpark. 11 slides, wave pool, iodine-brine thermal baths. Open year-round." },
+  { name: "Säntispark", loc: "Abtwil, SG", cat: "swim", emoji: "🏊", tags:["Pool","Bowling","Indoor playground"], rating: 4.5, price:"CHF 28/adult", gradient: "linear-gradient(135deg, #DCEAF3 0%, #ECE3F5 100%)", x: 426, y: 131, about: "All-in-one family complex with pools, slides, bowling, climbing wall, and a soft-play area for under-5s." },
+  { name: "Trampolino Indoor", loc: "Volketswil, ZH", cat: "indoor", emoji: "🤸", tags:["Indoor","Age 1-12","Rainy day"], rating: 4.5, price:"CHF 14/child", gradient: "linear-gradient(135deg, #FAEBC4 0%, #FFE5DC 100%)", x: 357, y: 138, about: "Soft-play paradise with climbing structures, slides, trampolines, and a toddler zone. Cafe for parents to relax." },
+  { name: "JumpTown Trampoline Park", loc: "Lyssach, BE", cat: "indoor", emoji: "🦘", tags:["Trampolines","Age 4+","Active"], rating: 4.6, price:"CHF 18/hr", gradient: "linear-gradient(135deg, #FFE5DC 0%, #FAEBC4 100%)", x: 237, y: 181, about: "Connected trampolines, foam pits, dodgeball court, and ninja warrior course. Reserve in advance on weekends." },
+  { name: "TCS Camping Morges", loc: "Lake Geneva, VD", cat: "camping", emoji: "⛺", tags:["Lakeside","Playground","Pool"], rating: 4.7, price:"From CHF 39/night", gradient: "linear-gradient(135deg, #DCEAF3 0%, #DDEBD3 100%)", x: 117, y: 263, about: "Lakeside campsite west of Lausanne. Direct lake access, swimming pool, kids' playground, and bike rentals." },
+  { name: "TCS Camping Lazy Rancho", loc: "Interlaken, BE", cat: "camping", emoji: "🏕️", tags:["Mountains","Pool","Family"], rating: 4.8, price:"From CHF 45/night", gradient: "linear-gradient(135deg, #DDEBD3 0%, #FAEBC4 100%)", x: 273, y: 233, about: "Family-run campsite with Jungfrau views, heated pool, and easy access to Harder Kulm, boat trips, and adventure parks." },
+  { name: "Bürkliplatz Family Park", loc: "Zürich, ZH", cat: "park", emoji: "🎠", tags:["Lakeside","Carousel","Free"], rating: 4.6, price:"Free", gradient: "linear-gradient(135deg, #DDEBD3 0%, #DCEAF3 100%)", x: 346, y: 144, about: "Lakeside plaza with a beloved historic carousel, ice cream stands, and grassy areas. Great for under-6s." },
+  { name: "Parc des Bastions", loc: "Geneva, GE", cat: "park", emoji: "♟️", tags:["Giant chess","Playground","Free"], rating: 4.7, price:"Free", gradient: "linear-gradient(135deg, #DDEBD3 0%, #ECE3F5 100%)", x: 81, y: 300, about: "Iconic park with life-sized chess boards, climbing structures, and shaded picnic spots. Free and central." },
+  { name: "Gurten - Bern's Mountain", loc: "Bern, BE", cat: "park", emoji: "🚞", tags:["Funicular","Toboggan","Mini-train"], rating: 4.8, price:"CHF 13.60 funicular", gradient: "linear-gradient(135deg, #DDEBD3 0%, #FAEBC4 100%)", x: 224, y: 200, about: "Bern's local mountain. Take the historic funicular up to find a mini-train, summer toboggan, playground, and picnic meadows." },
+  { name: "Atzmännig Rope Park", loc: "Goldingen, SG", cat: "adventure", emoji: "🧗", tags:["Climbing","Summer toboggan","Age 5+"], rating: 4.7, price:"CHF 38/day", gradient: "linear-gradient(135deg, #FAEBC4 0%, #DDEBD3 100%)", x: 386, y: 152, about: "Treetop rope courses for all skill levels, plus Switzerland's longest summer toboggan run. Kids' courses from age 5." },
+  { name: "Connyland", loc: "Lipperswil, TG", cat: "adventure", emoji: "🎢", tags:["Theme park","Sea lions","Day trip"], rating: 4.5, price:"CHF 38/adult", gradient: "linear-gradient(135deg, #FFE5DC 0%, #ECE3F5 100%)", x: 391, y: 113, about: "Switzerland's largest theme park. Rides for all ages, sea lion shows, and a water play area. Easy day trip from Zürich." },
+  { name: "Stoos Family Hike", loc: "Stoos, SZ", cat: "adventure", emoji: "🥾", tags:["Easy hike","Funicular","Picnic"], rating: 4.9, price:"CHF 50/family", gradient: "linear-gradient(135deg, #DDEBD3 0%, #DCEAF3 100%)", x: 354, y: 192, about: "World's steepest funicular up to Stoos village, then a stroller-friendly ridge trail with mountain views. Great for first-time hikers." },
+  { name: "Klewenalp Summer Toboggan", loc: "Beckenried, NW", cat: "adventure", emoji: "🛷", tags:["Toboggan","Cable car","Age 3+"], rating: 4.7, price:"CHF 12/ride", gradient: "linear-gradient(135deg, #FAEBC4 0%, #DCEAF3 100%)", x: 333, y: 192, about: "Cable car to Klewenalp, then bobsled-style toboggan run through alpine meadows. Lake views of Vierwaldstättersee." },
+  { name: "Lindenhof Playground", loc: "Zürich, ZH", cat: "park", emoji: "🌳", tags:["Historic","Old town","Free"], rating: 4.4, price:"Free", gradient: "linear-gradient(135deg, #DDEBD3 0%, #FAEBC4 100%)", x: 343, y: 140, about: "Historic hilltop square in the old town with chess tables, climbing structures, and views over the Limmat river." }
+];
+
+// Mapping: venue index → array of family indices interested in going
+const venueInterest = {
+  0: [0, 5, 8, 2, 6],      // Knies Kinderzoo - popular for younger kids
+  1: [0, 3, 5, 7, 9, 8],   // Zoo Zürich - many ZH families
+  2: [3, 9, 6, 1],         // Verkehrshaus - trains & STEM
+  3: [3, 0, 5, 9],         // Technorama - science families
+  4: [1, 6, 8, 4],         // Alpamare
+  5: [4, 9],               // Säntispark
+  6: [8, 0, 5],            // Trampolino
+  7: [6, 4, 7],            // JumpTown
+  8: [1, 8, 5, 2],         // TCS Morges - SW families
+  9: [4, 7, 2, 0],         // TCS Interlaken
+  10: [0, 8, 5, 3],        // Bürkliplatz
+  11: [1, 8, 5],           // Parc des Bastions
+  12: [4, 7],              // Gurten
+  13: [0, 2, 6, 9],        // Atzmännig
+  14: [2, 6, 0, 7],        // Connyland
+  15: [0, 4, 7, 2],        // Stoos
+  16: [2, 6],              // Klewenalp
+  17: [0, 8, 5, 3]         // Lindenhof
+};
+
+// Family-specific playdate timing per venue (just for flavor)
+const venueSchedules = ["This Sat AM", "Sun afternoon", "Next weekend", "Wed PM", "This Sun", "Sat midday", "Sat AM"];
+
+const conversations = [
+  {
+    family: families[0],
+    lastMsg: "How about Saturday at Üetliberg? Lena would love it 🌲",
+    time: "12m",
+    unread: 1,
+    online: true,
+    messages: [
+      { type:'received', text:"Hi! So happy we matched 🎉 Our kids are similar ages!" },
+      { type:'sent', text:"Same here! Mila (5) and Lena would get along great. Jonas could keep Max company too." },
+      { type:'received', text:"Perfect! What does your weekend look like?" },
+      { type:'venue-suggestion', venue: { emoji:"🌲", name:"Üetliberg Family Hike", desc:"Easy 1hr walk, playground at top, panoramic views"} },
+      { type:'received', text:"How about Saturday at Üetliberg? Lena would love it 🌲" }
+    ]
+  },
+  {
+    family: families[3],
+    lastMsg: "Anya is excited to meet Mila! 💕",
+    time: "1h",
+    unread: 1,
+    online: false,
+    messages: [
+      { type:'received', text:"Hi Hofer family! Loved your profile — we both have 5yo girls who draw 🎨" },
+      { type:'sent', text:"That's so sweet! Anya and Mila would have so much fun. Where do you usually hang out?" },
+      { type:'received', text:"We love Technorama on rainy days, and the playground at Münsterplatz. You?" },
+      { type:'sent', text:"Same crew on Technorama! Want to do a joint visit this month?" },
+      { type:'received', text:"Anya is excited to meet Mila! 💕" }
+    ]
+  },
+  {
+    family: families[2],
+    lastMsg: "Pizza night for the kids next weekend? 🍕",
+    time: "3h",
+    unread: 0,
+    online: false,
+    messages: [
+      { type:'received', text:"Ciao! We're in Lugano but visit Zürich often. Open to a meetup?" },
+      { type:'sent', text:"Absolutely! Three kids would energise our two 😄" },
+      { type:'received', text:"Pizza night for the kids next weekend? 🍕" }
+    ]
+  },
+  {
+    family: families[5],
+    lastMsg: "Origami workshop with the kids? Yuki has all the paper!",
+    time: "Yesterday",
+    unread: 0,
+    online: true,
+    messages: [
+      { type:'received', text:"Konnichiwa! Yuki and your Mila are the same age 🌸" },
+      { type:'sent', text:"How adorable! Are you in Lausanne or near Zürich?" },
+      { type:'received', text:"Lausanne, but happy to meet halfway in Bern sometime!" },
+      { type:'received', text:"Origami workshop with the kids? Yuki has all the paper!" }
+    ]
+  },
+  {
+    family: families[7],
+    lastMsg: "Aoife sent a drawing 🎨",
+    time: "2d",
+    unread: 0,
+    online: false,
+    messages: [
+      { type:'received', text:"Hi! New to Zug from Dublin. Looking for English-speaking friends." },
+      { type:'sent', text:"Welcome to Switzerland! Our kids speak some English, would love a meetup." },
+      { type:'received', text:"Aoife sent a drawing 🎨" }
+    ]
+  }
+];
+
+const likedYouFamilies = [
+  { emoji:"🚂", gradient:"linear-gradient(135deg, #DCEAF3 0%, #ECE3F5 100%)" },
+  { emoji:"🎈", gradient:"linear-gradient(135deg, #FAEBC4 0%, #FFE5DC 100%)" },
+  { emoji:"🦔", gradient:"linear-gradient(135deg, #DDEBD3 0%, #FAEBC4 100%)" },
+  { emoji:"🎪", gradient:"linear-gradient(135deg, #ECE3F5 0%, #DCEAF3 100%)" }
+];
+
+// ========== STATE ==========
+let currentIdx = 0;
+let activeChat = null;
+
+// ========== DISCOVER (SWIPE) ==========
+function renderCardStack() {
+  const stack = document.getElementById('cardStack');
+  stack.innerHTML = '';
+
+  if (currentIdx >= families.length) {
+    stack.innerHTML = `
+      <div class="empty-stack">
+        <div class="empty-stack-emoji">🌟</div>
+        <h3>You've seen everyone!</h3>
+        <p>Try widening your filters or check back tomorrow — new families join daily.</p>
+      </div>`;
+    return;
+  }
+
+  // Render up to 3 cards (stacked)
+  for (let i = Math.min(currentIdx + 2, families.length - 1); i >= currentIdx; i--) {
+    const fam = families[i];
+    const depth = i - currentIdx;
+    const card = createFamilyCard(fam, depth);
+    stack.appendChild(card);
+  }
+
+  // Attach swipe to top card
+  const top = stack.lastElementChild;
+  if (top && !top.classList.contains('empty-stack')) {
+    attachSwipe(top);
+  }
+}
+
+function createFamilyCard(fam, depth) {
+  const card = document.createElement('div');
+  card.className = 'family-card';
+  card.style.transform = `translateY(${depth * 8}px) scale(${1 - depth * 0.04})`;
+  card.style.zIndex = 10 - depth;
+  card.style.opacity = depth === 0 ? 1 : depth === 1 ? 0.92 : 0.85;
+
+  card.innerHTML = `
+    <div class="card-hero" style="background:${fam.gradient}">
+      ${fam.verified ? `<div class="verified-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Verified
+      </div>` : ''}
+      <div class="distance-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${fam.distance}
+      </div>
+      <div class="card-emoji">${fam.emoji}</div>
+      <div class="swipe-overlay like">Like</div>
+      <div class="swipe-overlay nope">Skip</div>
+    </div>
+    <div class="card-body">
+      <h2 class="card-name">${fam.name}</h2>
+      <p class="card-location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${fam.location}
+      </p>
+      <div class="kids-row">
+        ${fam.kids.map(k => `<span class="kid-pill">${k.name} <span class="age">${k.age}</span></span>`).join('')}
+      </div>
+      <div class="card-meta">
+        <span class="card-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+          ${fam.languages.join(' · ')}
+        </span>
+        <span class="card-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ${fam.schedule}
+        </span>
+      </div>
+      <p class="card-bio">${fam.bio}</p>
+      <div class="interests-row">
+        ${fam.interests.map(i => `<span class="interest-tag">${i}</span>`).join('')}
+      </div>
+    </div>
+  `;
+  return card;
+}
+
+function attachSwipe(card) {
+  let startX = 0, startY = 0, currentX = 0, currentY = 0;
+  let dragging = false;
+  const likeOverlay = card.querySelector('.swipe-overlay.like');
+  const nopeOverlay = card.querySelector('.swipe-overlay.nope');
+
+  const onStart = (e) => {
+    dragging = true;
+    const pt = e.touches ? e.touches[0] : e;
+    startX = pt.clientX;
+    startY = pt.clientY;
+    card.classList.add('swiping');
+  };
+
+  const onMove = (e) => {
+    if (!dragging) return;
+    const pt = e.touches ? e.touches[0] : e;
+    currentX = pt.clientX - startX;
+    currentY = pt.clientY - startY;
+    const rot = currentX * 0.06;
+    card.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rot}deg)`;
+    const opacity = Math.min(Math.abs(currentX) / 120, 1);
+    if (currentX > 0) {
+      likeOverlay.style.opacity = opacity;
+      nopeOverlay.style.opacity = 0;
+    } else {
+      nopeOverlay.style.opacity = opacity;
+      likeOverlay.style.opacity = 0;
+    }
+  };
+
+  const onEnd = () => {
+    if (!dragging) return;
+    dragging = false;
+    card.classList.remove('swiping');
+    const threshold = 100;
+    if (Math.abs(currentX) > threshold) {
+      const dir = currentX > 0 ? 'right' : 'left';
+      finishSwipe(card, dir);
+    } else {
+      card.style.transform = `translateY(0) scale(1) rotate(0)`;
+      likeOverlay.style.opacity = 0;
+      nopeOverlay.style.opacity = 0;
+    }
+    currentX = 0; currentY = 0;
+  };
+
+  card.addEventListener('mousedown', onStart);
+  card.addEventListener('mousemove', onMove);
+  card.addEventListener('mouseup', onEnd);
+  card.addEventListener('mouseleave', onEnd);
+  card.addEventListener('touchstart', onStart, {passive: true});
+  card.addEventListener('touchmove', onMove, {passive: true});
+  card.addEventListener('touchend', onEnd);
+}
+
+function swipeCard(dir) {
+  const stack = document.getElementById('cardStack');
+  const top = stack.lastElementChild;
+  if (!top || top.classList.contains('empty-stack')) return;
+  finishSwipe(top, dir);
+}
+
+function finishSwipe(card, dir) {
+  card.classList.add(dir === 'right' ? 'gone-right' : 'gone-left');
+
+  // If swiped right (like) — chance of match
+  const liked = dir === 'right';
+  const matchedFam = families[currentIdx];
+
+  setTimeout(() => {
+    currentIdx++;
+    renderCardStack();
+    // Trigger match modal on certain families
+    if (liked && [0, 2, 5].includes(currentIdx - 1)) {
+      showMatchModal(matchedFam);
+    }
+  }, 320);
+}
+
+function showMatchModal(fam) {
+  const modal = document.getElementById('matchModal');
+  document.getElementById('matchedFamilyName').textContent = fam.name;
+  const avatar = document.getElementById('matchedFamilyAvatar');
+  avatar.style.background = fam.gradient;
+  avatar.querySelector('.card-emoji').textContent = fam.emoji;
+  modal.classList.add('active');
+}
+function closeMatchModal(goToChat) {
+  document.getElementById('matchModal').classList.remove('active');
+  if (goToChat) switchView('messages');
+}
+
+// ========== MATCHES ==========
+function renderMatches() {
+  const grid = document.getElementById('matchesGrid');
+  const matched = [families[0], families[2], families[3], families[5], families[7], families[8]];
+  grid.innerHTML = matched.map((f, i) => `
+    <div class="match-card" onclick="openChat(${families.indexOf(f)})">
+      <div class="match-hero" style="background:${f.gradient}">
+        ${i < 2 ? '<span class="match-new">New</span>' : ''}
+        <span class="card-emoji">${f.emoji}</span>
+      </div>
+      <div class="match-info">
+        <h4>${f.name.replace('The ','').replace(' Family','').replace(' Ailesi','').replace(' Familie','').slice(0,18)}</h4>
+        <p>${f.kids.length} kid${f.kids.length>1?'s':''} · ${f.location.split(',')[0].split('-')[0]}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const liked = document.getElementById('likedYou');
+  liked.innerHTML = likedYouFamilies.map(f => `
+    <div class="liked-mini">
+      <div class="liked-mini-avatar" style="background:${f.gradient}">
+        <span class="card-emoji">${f.emoji}</span>
+      </div>
+      <p>Premium</p>
+    </div>
+  `).join('') + `
+    <div class="liked-mini" style="display:flex; align-items:center; justify-content:center; flex-direction:column;">
+      <div class="liked-mini-avatar" style="background: linear-gradient(135deg, var(--primary-soft), var(--honey-soft)); filter:none;">
+        <span style="color: var(--primary-deep); font-family: 'Fraunces', serif; font-size:28px; font-weight:700;">+8</span>
+      </div>
+      <p>See all</p>
+    </div>
+  `;
+}
+
+// ========== VENUES (LIST) ==========
+function renderVenues(filter = 'all') {
+  const list = document.getElementById('venuesList');
+  const filtered = filter === 'all' ? venues : venues.filter(v => v.cat === filter);
+  list.innerHTML = filtered.map(v => {
+    const idx = venues.indexOf(v);
+    const interested = (venueInterest[idx] || []).length;
+    return `
+    <div class="venue-card" onclick="openVenueSheet(${idx})">
+      <div class="venue-img" style="background:${v.gradient}">
+        <span class="v-emoji">${v.emoji}</span>
+      </div>
+      <div class="venue-content">
+        <div class="venue-name">${v.name}</div>
+        <div class="venue-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${v.loc}
+        </div>
+        <div class="venue-tags">
+          ${v.tags.slice(0,2).map(t => `<span class="v-tag">${t}</span>`).join('')}
+          ${interested > 0 ? `<span class="v-tag" style="background:var(--primary-soft); color:var(--primary-deep); font-weight:600;">${interested} interested</span>` : ''}
+        </div>
+        <div class="venue-bottom">
+          <span class="venue-rating">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            ${v.rating}
+          </span>
+          <span class="venue-price">${v.price}</span>
+        </div>
+      </div>
+    </div>
+  `}).join('');
+}
+
+// ========== VENUES (MAP) ==========
+const catColors = {
+  park: '#7FA66C',
+  indoor: '#B8A4D4',
+  museum: '#88B5D3',
+  camping: '#E8B14A',
+  swim: '#5BA0C7',
+  zoo: '#4E7340',
+  adventure: '#E86A4E'
+};
+
+function setVenueMode(mode) {
+  document.querySelectorAll('.vt-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  document.getElementById('venuesListMode').style.display = mode === 'list' ? 'block' : 'none';
+  document.getElementById('venuesMapMode').style.display = mode === 'map' ? 'block' : 'none';
+  if (mode === 'map') renderMapPins('all');
+}
+
+function renderMapPins(filter = 'all') {
+  const g = document.getElementById('venuePins');
+  const svgNS = 'http://www.w3.org/2000/svg';
+  g.innerHTML = '';
+
+  venues.forEach((v, idx) => {
+    const dim = filter !== 'all' && v.cat !== filter;
+    const color = catColors[v.cat] || '#888';
+    const interested = (venueInterest[idx] || []).length;
+    const opacity = dim ? 0.18 : 1;
+
+    const pin = document.createElementNS(svgNS, 'g');
+    pin.setAttribute('class', 'venue-pin');
+    pin.setAttribute('transform', `translate(${v.x}, ${v.y})`);
+    pin.style.opacity = opacity;
+    if (!dim) pin.setAttribute('onclick', `openVenueSheet(${idx})`);
+
+    pin.innerHTML = `
+      <ellipse cx="0" cy="4" rx="8.5" ry="2.5" fill="rgba(0,0,0,0.18)"/>
+      <circle cx="0" cy="0" r="10" fill="white" stroke="${color}" stroke-width="1.5"/>
+      <circle cx="0" cy="0" r="6.5" fill="${color}"/>
+      ${interested > 0 ? `
+        <g transform="translate(8, -8)">
+          <circle r="6.5" fill="#E86A4E" stroke="white" stroke-width="1.5"/>
+          <text text-anchor="middle" y="2.5" font-family="DM Sans, sans-serif" font-size="8" font-weight="700" fill="white">${interested}</text>
+        </g>
+      ` : ''}
+    `;
+    g.appendChild(pin);
+  });
+}
+
+document.querySelectorAll('.map-cat-pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.map-cat-pill').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    renderMapPins(btn.dataset.cat);
+  });
+});
+
+// ========== BOTTOM SHEET ==========
+function openVenueSheet(venueIdx) {
+  const v = venues[venueIdx];
+  const interestedIdxs = venueInterest[venueIdx] || [];
+  const interestedFams = interestedIdxs.map(i => families[i]);
+  const matchedIdxs = [0, 2, 3, 5, 7, 8]; // families we already matched with
+
+  // Compatibility hint: families with similar-age kids (3-8)
+  const yourKidAges = [5, 7];
+
+  const cards = interestedFams.map((f, i) => {
+    const famIdx = families.indexOf(f);
+    const isMatched = matchedIdxs.includes(famIdx);
+    const sched = venueSchedules[(venueIdx + i) % venueSchedules.length];
+    const kidAges = f.kids.map(k => k.age).join(', ');
+    const handler = isMatched
+      ? `openChat(${famIdx})`
+      : `closeVenueSheet(); setTimeout(() => alert('Send a connect request to ${f.name.replace(/'/g, "\\'")}?'), 320)`;
+    return `
+      <div class="interested-card" onclick="${handler}">
+        <div class="ic-hero" style="background:${f.gradient}">
+          ${isMatched ? '<span class="ic-match">Matched</span>' : ''}
+          <span class="card-emoji">${f.emoji}</span>
+        </div>
+        <div class="ic-body">
+          <h5>${f.name.replace('The ','').replace(' Family','').replace(' Familie','').replace(' Ailesi','').replace('Famille ','').replace('Famiglia ','').replace('Familia ','').slice(0, 16)}</h5>
+          <div class="ic-detail">${f.kids.length} kid${f.kids.length>1?'s':''} · ${kidAges}y</div>
+          <span class="ic-when">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            ${sched}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const scroll = document.getElementById('sheetScroll');
+  scroll.innerHTML = `
+    <div class="sheet-hero" style="background:${v.gradient}">
+      <div class="sheet-hero-cat">${v.cat}</div>
+      <div class="sheet-hero-badge">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        ${v.rating}
+      </div>
+      <div class="v-emoji">${v.emoji}</div>
+    </div>
+
+    <h2 class="sheet-title">${v.name}</h2>
+    <p class="sheet-loc">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      ${v.loc} <span class="dot">·</span> ${v.price}
+    </p>
+
+    <div class="sheet-meta">
+      ${v.tags.map(t => `<span class="v-tag">${t}</span>`).join('')}
+    </div>
+
+    <div class="sheet-section">
+      <div class="sheet-section-head">
+        <h4>Families <em>going here</em></h4>
+        <span class="count-pill">${interestedFams.length}</span>
+      </div>
+      <p class="sheet-section-sub">Tap a family to message them, propose a joint visit, or send a connect request.</p>
+      <div class="interested-list">${cards}</div>
+    </div>
+
+    <div class="sheet-section">
+      <div class="sheet-section-head">
+        <h4>Good to <em>know</em></h4>
+      </div>
+      <p style="font-size:13px; color:var(--text-mid); line-height:1.55; margin-bottom:12px;">${v.about}</p>
+      <div class="info-grid">
+        <div class="info-item"><div class="il">Best for ages</div><div class="iv">3 – 12</div></div>
+        <div class="info-item"><div class="il">Indoor / outdoor</div><div class="iv">${['indoor','swim','museum'].includes(v.cat) ? 'Indoor' : v.cat === 'camping' ? 'Both' : 'Outdoor'}</div></div>
+        <div class="info-item"><div class="il">Avg. visit</div><div class="iv">${v.cat === 'camping' ? '1–3 nights' : v.cat === 'park' ? '1–2 hours' : '3–5 hours'}</div></div>
+        <div class="info-item"><div class="il">Stroller-friendly</div><div class="iv">${['park','museum','indoor','swim','zoo'].includes(v.cat) ? 'Yes' : 'Partly'}</div></div>
+      </div>
+    </div>
+
+    <div class="sheet-actions">
+      <button class="sheet-btn secondary" id="interestBtn" onclick="toggleInterest(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        I'm interested
+      </button>
+      <button class="sheet-btn primary" onclick="alert('Propose a meetup at ${v.name.replace(/'/g, "")} — pick a date and invite families.')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Plan a meetup
+      </button>
+    </div>
+  `;
+
+  document.getElementById('venueSheet').classList.add('open');
+  document.getElementById('sheetBackdrop').classList.add('open');
+}
+
+function closeVenueSheet() {
+  document.getElementById('venueSheet').classList.remove('open');
+  document.getElementById('sheetBackdrop').classList.remove('open');
+}
+
+function toggleInterest(btn) {
+  btn.classList.toggle('toggled');
+  btn.innerHTML = btn.classList.contains('toggled')
+    ? `<svg viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>You're interested`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>I'm interested`;
+}
+
+// Favourite venues (subset on profile)
+function renderFavVenues() {
+  const fav = document.getElementById('favVenues');
+  const picks = [venues[0], venues[3], venues[10]];
+  fav.innerHTML = picks.map(v => `
+    <div class="venue-card">
+      <div class="venue-img" style="background:${v.gradient}">
+        <span class="v-emoji">${v.emoji}</span>
+      </div>
+      <div class="venue-content">
+        <div class="venue-name">${v.name}</div>
+        <div class="venue-loc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${v.loc}
+        </div>
+        <div class="venue-tags">${v.tags.slice(0,2).map(t => `<span class="v-tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ========== MESSAGES ==========
+function renderConvList() {
+  const list = document.getElementById('convList');
+  list.innerHTML = conversations.map((c, i) => `
+    <div class="conv-item" onclick="openChat(${families.indexOf(c.family)})">
+      <div class="conv-avatar" style="background:${c.family.gradient}">
+        <span class="ca-emoji">${c.family.emoji}</span>
+        ${c.online ? '<span class="conv-online"></span>' : ''}
+      </div>
+      <div class="conv-content">
+        <div class="conv-top">
+          <span class="conv-name">${c.family.name.replace('The ','').replace(' Family','').replace(' Familie','')}</span>
+          <span class="conv-time">${c.time}</span>
+        </div>
+        <div class="conv-meta">
+          <span class="conv-msg ${c.unread ? 'unread' : ''}">${c.lastMsg}</span>
+          ${c.unread ? '<span class="unread-dot"></span>' : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openChat(famIdx) {
+  switchView('messages');
+  const fam = families[famIdx];
+  const conv = conversations.find(c => c.family === fam);
+  if (!conv) return;
+  activeChat = conv;
+
+  document.getElementById('convListWrap').style.display = 'none';
+  document.getElementById('chatView').classList.add('active');
+  document.getElementById('chatHeaderName').textContent = fam.name;
+  document.getElementById('chatHeaderStatus').textContent = conv.online ? 'Active now' : 'Active 1h ago';
+  const avatar = document.getElementById('chatHeaderAvatar');
+  avatar.style.background = fam.gradient;
+  avatar.querySelector('.ch-emoji').textContent = fam.emoji;
+
+  renderChatBody(conv);
+}
+
+function renderChatBody(conv) {
+  const body = document.getElementById('chatBody');
+  let html = '<div class="chat-day-divider">Today</div>';
+  conv.messages.forEach(m => {
+    if (m.type === 'venue-suggestion') {
+      html += `<div class="msg-card-suggestion">
+        <strong>I suggest a venue ✨</strong>
+        <div class="venue-info">
+          <span class="venue-info-emoji">${m.venue.emoji}</span>
+          <div class="venue-info-text">
+            <strong style="font-family:inherit; font-size:13px; color:var(--text-dark);">${m.venue.name}</strong><br>
+            ${m.venue.desc}
+          </div>
+        </div>
+        <div class="msg-actions">
+          <button class="msg-action-btn primary">Yes! Let's go</button>
+          <button class="msg-action-btn">Maybe later</button>
+        </div>
+      </div>`;
+    } else {
+      html += `<div class="msg ${m.type}">${m.text}</div>`;
+    }
+  });
+  body.innerHTML = html;
+  body.scrollTop = body.scrollHeight;
+}
+
+function closeChat() {
+  document.getElementById('chatView').classList.remove('active');
+  document.getElementById('convListWrap').style.display = 'block';
+  activeChat = null;
+}
+
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || !activeChat) return;
+  activeChat.messages.push({ type: 'sent', text });
+  renderChatBody(activeChat);
+  input.value = '';
+  // Simulate reply
+  setTimeout(() => {
+    activeChat.messages.push({ type:'received', text:"Sounds great! Let me check with the kids 😊" });
+    renderChatBody(activeChat);
+  }, 1500);
+}
+
+// ========== NAV ==========
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.view === view));
+  if (view !== 'messages') closeChat();
+}
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => switchView(btn.dataset.view));
+});
+
+// Venue category filter
+document.querySelectorAll('.venue-cat').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.venue-cat').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    renderVenues(btn.dataset.cat);
+  });
+});
+
+// Filter chips
+document.querySelectorAll('.filter-chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => chip.classList.toggle('active'));
+});
+
+// Initial render
+renderCardStack();
+renderMatches();
+renderVenues();
+renderConvList();
+renderFavVenues();
+</script>
+</body>
+</html>
